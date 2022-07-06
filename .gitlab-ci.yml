@@ -1,0 +1,17 @@
+before_script:
+  - cmake --version
+  - git clone --depth 1 https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlabu.ffi.no/autonomi_sceneanalyse/conan/conanizer.git
+
+build-conan:
+  stage: build
+  image: gitlabu.ffi.no:4999/autonomi_sceneanalyse/docker/conan:18.04
+  except: [tags]
+  script:
+    - ./conanizer/build-recipe.bash
+
+upload-gitlabcom:
+  stage: deploy
+  image: gitlabu.ffi.no:4999/autonomi_sceneanalyse/docker/conan:18.04
+  only: [tags]
+  script:
+    - ./conanizer/upload-recipe.bash
